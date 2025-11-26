@@ -2,13 +2,13 @@
 #define RPN_HPP
 
 #include <string>
-#include <deque>
+#include <list>
 
 class RPN {
 public:
 	static double evaluate(const std::string &rawProblem);
 private:
-	static std::deque<double> stack;
+	static std::list<double> stack;
 	RPN();
 	RPN(const RPN& other);
 	RPN& operator=(const RPN& other);

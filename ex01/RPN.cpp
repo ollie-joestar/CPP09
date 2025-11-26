@@ -2,7 +2,7 @@
 #include <iostream>
 #include <climits>
 
-std::deque<double> RPN::stack;
+std::list<double> RPN::stack;
 
 RPN::RPN() {}
 
@@ -28,6 +28,8 @@ double RPN::popNumber() {
 
 double RPN::performOperation(char op) {
 	double right = popNumber();
+	if (right == -1)
+		return (-1);
 	double left = popNumber();
 	if (right == -1 || left == -1)
 		return (-1);
@@ -143,6 +145,6 @@ double RPN::evaluate(const std::string &rawProblem) {
 		return (-1);
 	}
 	double result = popNumber();
-	std::cout << std::fixed << result << std::endl;
+	std::cout << result << std::endl;
 	return result;
 }
