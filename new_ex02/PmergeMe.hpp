@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <string>
 #include <sstream>
+#include <utility>
 
 class PmergeMe {
 public:
@@ -15,31 +16,30 @@ public:
 
 	void sort(std::string &input);
 private:
-	std::vector<std::vector<int> > _numVector;
-	std::vector<std::vector<int> > _sortedVector;
-	std::deque<std::deque<int> > _numDeque;
-	std::deque<std::deque<int> > _sortedDeque;
+	PmergeMe(const PmergeMe& other);
+	PmergeMe& operator=(const PmergeMe& other);
+
+	std::vector<std::pair<std::vector<int>, std::vector<int> > > _vec;
+	std::vector<std::vector<int> > _vecExtra;
 
 	size_t	initSize;
 	size_t	vecComparisonCount;
 	size_t	dequeComparisonCount;
 	size_t	sorted;
 	size_t	toInsert;
+	bool 	merged;
 
-	PmergeMe(const PmergeMe& other);
-	PmergeMe& operator=(const PmergeMe& other);
 
 	void addNumber(int number);
+	void initVectorPairs();
 	void sortUsingVector();
 	void sortUsingDeque();
 	void printVector() const;
 	void printDeque() const;
 
+	void compareVector();
 	void mergeVector();
-	void mergeSortDeque();
-
 	void splitVector();
-	void splitDeque();
 	void insertVector();
 };
 
