@@ -19,7 +19,7 @@ private:
 	PmergeMe(const PmergeMe& other);
 	PmergeMe& operator=(const PmergeMe& other);
 
-	std::vector<std::vector<int> > _vecA;
+	std::vector<std::vector<int> > _vec;
 	std::vector<std::vector<int> > _vecInsert;
 	std::vector<std::vector<int> > _vecExtra;
 	std::vector<std::vector<int> > _vecSorted;
