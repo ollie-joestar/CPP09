@@ -19,10 +19,10 @@ private:
 	PmergeMe(const PmergeMe& other);
 	PmergeMe& operator=(const PmergeMe& other);
 
-
-	std::vector<std::pair<std::vector<int>, std::vector<int> > > _vec;
+	std::vector<std::vector<int> > _vecA;
+	std::vector<std::vector<int> > _vecInsert;
 	std::vector<std::vector<int> > _vecExtra;
-	std::vector<std::vector<int> > _vecTemp;
+	std::vector<std::vector<int> > _vecSorted;
 
 	size_t	initSize;
 	size_t	vecComparisonCount;
@@ -31,19 +31,17 @@ private:
 	size_t	toInsert;
 	bool 	merged;
 
-
 	void addNumber(int number);
-	void initVectorPairs();
 	void sortUsingVector();
-	void sortUsingDeque();
+	void mergeVector();
+	void compareVector();
+	void splitVector();
 	void strangerVecAlert();
+	void insertVector();
+
+	size_t findRange(size_t idx) const;
 	void printVector() const;
 	void printDeque() const;
-
-	void compareVector();
-	void mergeVector();
-	void splitVector();
-	void insertVector();
 };
 
 #endif // PMERGEME_HPP

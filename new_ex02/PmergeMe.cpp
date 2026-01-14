@@ -145,35 +145,45 @@ void PmergeMe::mergeVector() {
 	}
 	if (_vec.size() % 2)
 		_vecExtra.insert(_vecExtra.begin(), _vec.back().first);
-	
-
 	_vec.swap(tempVec);
 }
 
 void PmergeMe::splitVector() {
-	// size_t bucketSize = _numVector[0].size();
-	//
-	// sorted = 0;
-	// toInsert = 0;
-	// for (size_t i = 0; i < _numVector.size(); ++i) {
-	// 	if (_numVector[i].size() == bucketSize) {
-	// 		std::vector<int> left(_numVector[i].begin(), _numVector[i].begin() + bucketSize / 2);
-	// 		std::vector<int> right(_numVector[i].begin() + bucketSize / 2, _numVector[i].end());
-	// 		_sortedVector.push_back(right);
-	// 		_numVector[i] = left;
-	// 		sorted += 1;
-	// 	}
-	// }
-	// for (size_t i = 0; i < _numVector.size(); i++ ) {
-	// 	if (_numVector[i].size() == bucketSize / 2) {
-	// 		toInsert++;
-	// 	}
-	// }
+	size_t half = _vec[0].first.size() / 2;
+	for (size_t i = 0; i < _vec.size(); i += 2) {
+		std::cout << "Splitting vector " << i << std::endl;
+		std::vector<int> first;
+		first.insert(first.end(), _vec[i].second.begin(), _vec[i].second.begin() + half);
+		std::vector<int> second;
+		second.insert(second.end(), _vec[i].second.begin() + half, _vec[i].second.end());
+		_vec.insert(_vec.begin() + i, std::make_pair(first, second));
+		first.clear();
+		second.clear();
+		first.insert(first.end(), _vec[i + 1].first.begin(), _vec[i + 1].first.begin() + half);
+		second.insert(second.end(), _vec[i + 1].first.begin() + half, _vec[i + 1].first.end());
+		_vec.insert(_vec.begin() + i + 1, std::make_pair(first, second));
+		_vec.erase(_vec.begin() + i + 2);
+		toInsert += 2;
+	}
+}
+
+void PmergeMe::strangerVecAlert() {
+	if (toInsert == 0 || _vecExtra.empty())
+		return;
+	if (_vec[0].first.size() == _vecExtra[0].size()) {
+		toInsert++;
+	}
+	std::vector<int> stranger = std::vector<int>();
 
 }
 
 void PmergeMe::insertVector() {
 	std::vector<size_t> insertionOrder = generateJacobsthalOrder(toInsert);
+	std::cout << "Insertion order: ";
+	for (size_t i = 0; i < insertionOrder.size(); ++i) {
+		std::cout << insertionOrder[i] << " ";
+	}
+	std::cout << std::endl;
 
 	// for (size_t inserted = 0; inserted < toInsert; inserted++) {
 	// std::cout << "To insert: " << toInsert << " insertion order: ";
@@ -218,6 +228,10 @@ void PmergeMe::initVectorPairs() {
 		_vecExtra.erase(_vecExtra.begin(), _vecExtra.end() - 1);
 }
 
+// Jacpb number 1 3 2   5 4   11 10    9     8     7     6
+// search range 0 3 2-3 7 6-7 15 14-15 13-14 12-13 11-12 10-11
+// comparisons  0 2 2   3 3   4  4     4     4     4     4 
+
 void PmergeMe::sort(std::string &input) {
 	std::istringstream iss(input);
 	int number;
@@ -235,6 +249,11 @@ void PmergeMe::sort(std::string &input) {
 		compareVector();
 		mergeVector();
 	}
+	toInsert = 0;
+	splitVector();
+	strangerVecAlert();
+	printVector();
+	insertVector();
 	// while (!merged) {
 		// for (size_t i = 0; i < _numVector.size(); ++i) {
 		// 	if (i + 1 < _numVector.size()) {
